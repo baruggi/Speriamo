@@ -14,6 +14,7 @@ import anagrafica.Contatto;
 import database.datalog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import mensa.Menu;
 
 public class datalog {
 	//private final int PORT = 3306;
@@ -238,6 +239,33 @@ public class datalog {
 	/*public void DeleteChild(String nome, String cognome, String luogodiNascita, String Cf) throws SQLException{
 		
 	}*/
+	public ObservableList<Menu> ListaMense() throws Exception {
+		String r = "SELECT * FROM login.mensa";
 
+		PreparedStatement state = conn.prepareStatement(r);
+		ResultSet res = state.executeQuery();
+		ObservableList<Menu> list = FXCollections.observableArrayList();
+		while(res.next()) {
+		
+			Menu menu = new Menu();
+			menu.setPrimo(res.getString("Primo"));
+		
+			menu.setSecondo(res.getString("Secondo"));
+			menu.setFrutta(res.getString("Frutta"));
+			menu.setDolce(res.getString("Dolce"));
+			list.add(menu);
+		
+			
+		}
+		return list;	
+		
+	}
+
+	public void InsetMenu(String primo, String secondo, String frutta, String dolce) throws SQLException {
+		String query = "INSERT INTO login.mensa (Primo,Secondo,Frutta,Dolce) VALUES ('"+primo+"','"+secondo+"','"+frutta+"','"+dolce+"') ";
+		PreparedStatement state = conn.prepareStatement(query);
+		state.executeUpdate();
+			
+	}
 }
 
