@@ -31,8 +31,8 @@
       <Button layoutX="90.0" layoutY="386.0" mnemonicParsing="false" text="Back" />
       <Button layoutX="124.0" layoutY="343.0" mnemonicParsing="false" onAction="#addButtonClicked" text="aggiungi contatti" />
       <Button layoutX="32.0" layoutY="343.0" mnemonicParsing="false" onAction="#deleteButtonClicked" text="Delete" />
-      <Button layoutX="460.0" layoutY="399.0" mnemonicParsing="false" text="Vedi contatti" />
-      <TextField fx:id="NameField1" layoutX="56.0" layoutY="284.0" promptText="Numero Pediatra" />
-      <TextField fx:id="NameField2" layoutX="55.0" layoutY="247.0" promptText="Pediatra" />
+      <Button layoutX="460.0" layoutY="399.0" mnemonicParsing="false" onAction="#VediContatti" text="Vedi contatti" />
+      <TextField fx:id="NumeroPediatra" layoutX="56.0" layoutY="284.0" promptText="Numero Pediatra" />
+      <TextField fx:id="Pediatra" layoutX="55.0" layoutY="247.0" promptText="Pediatra" />
    </children>
 </AnchorPane>

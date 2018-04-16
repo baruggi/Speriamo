@@ -5,9 +5,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
+import java.awt.Button;
+import java.awt.Checkbox;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
@@ -26,8 +29,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import server.ServerInterface;
 
@@ -41,29 +45,26 @@ public class LoginController implements EventHandler<ActionEvent> {
 	static PrintWriter output;
 
 	@FXML
-	private Label label; // label login
+	private Label label;
 
-	@FXML 
-	private TextField nome;
+    @FXML
+    private TextField nome;
 
-	@FXML 
-	private TextField passs;
+    @FXML
+    private PasswordField passs;
 
 	@FXML
 	private ChoiceBox<String> selec;
 
-
-
 	JSONObject txt;
-
-
 
 	private String remoteObjectName = "MainFrame";
 
 
 	@SuppressWarnings("unchecked")
 	public void initialize(Stage primaryStage) throws Exception{
-		BorderPane root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+		AnchorPane root = FXMLLoader.load(getClass().getResource("Peppelogin.fxml"));
+		primaryStage.setResizable(false); //blocco la finestra
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		primaryStage.setTitle("Login");

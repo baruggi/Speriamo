@@ -147,7 +147,7 @@ public class datalog {
 			
 			bimbo.setCognome(res.getString("Cognome"));
 			
-			bimbo.setCf(res.getString("Codicefiscale").toUpperCase());
+			bimbo.setCf(res.getString("Codicefiscale"));
 			bimbo.setLuogoNascita(res.getString("LuogoDiNascita"));
 			bimbo.setBirthday(res.getDate("Compleanno").toLocalDate());
 		
@@ -200,9 +200,39 @@ public class datalog {
 
 
 	public void insertPed(String nome, String numero, String cf) throws Exception {
-		String r = "INSERT INTO login.pediatra (Nome,Numero,CodicFisc) VALUES ('"+nome+"','"+numero+"','"+cf+"') ";
+		String r = "INSERT INTO login.pediatra (Nome,Numero,Cod) VALUES ('"+nome+"','"+numero+"','"+cf+"') ";
 		PreparedStatement state = conn.prepareStatement(r);
 		state.executeUpdate();
+	}
+
+
+	
+	
+
+
+	public void insertParent(String nome, String numero, String cf) throws Exception {
+		String r = "INSERT INTO login.genitori (Nome,Numero,Figlio) VALUES ('"+nome+"','"+numero+"','"+cf+"') ";
+		PreparedStatement state = conn.prepareStatement(r);
+		state.executeUpdate();		
+	}
+
+
+	public void InsertCont(String nome, String numero, String cf) throws Exception {
+		String r = "INSERT INTO login.contatti (Nome,Numero,Cod) VALUES ('"+nome+"','"+numero+"','"+cf+"') ";
+		PreparedStatement state = conn.prepareStatement(r);
+		state.executeUpdate();			
+	}
+
+
+	public Contatto getPed(String cf) throws Exception {
+		String r = "SELECT * FROM login.pediatra WHERE Cod =" +'"'+cf+'"';
+
+		PreparedStatement state = conn.prepareStatement(r);
+		ResultSet res = state.executeQuery();
+		Contatto cont = new Contatto();
+		cont.setNome(res.getString("nome"));
+		cont.setNumero(res.getString("numero"));
+		return cont;
 	}
 	
 	/*public void DeleteChild(String nome, String cognome, String luogodiNascita, String Cf) throws SQLException{

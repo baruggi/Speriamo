@@ -14,6 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 public class Contatti implements Initializable {
 
@@ -55,6 +56,21 @@ public class Contatti implements Initializable {
 		
 			e.printStackTrace();
 		}
+		try {
+			System.out.println("9");
+			datalog d = new datalog();
+			Contatto c = new Contatto();
+			c = d.getPed(cf);
+			System.out.println("10");
+			NomePediatra.setText(c.getNome());
+			System.out.println(c.getNome());
+			NumeroPediatra.setText(c.getNumero());
+			System.out.println(c.getNumero());
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -75,14 +91,18 @@ public class Contatti implements Initializable {
 		this.cf = cf;
 		
 	}
-	/*public void AddCont(ActionEvent ev) {
-	     datalog d = new datalog();
+	public void AddCont(ActionEvent ev) throws Exception {
+	     	datalog d = new datalog();
 	    	Contatto bimbo = new Contatto();
 	        bimbo.setNome(Nome.getText());
 	        bimbo.setNumero(Numero.getText());
 
 	        table.getItems().add(bimbo);
-	        d.InsetChild(Nome.getText(), Numero.getText());
-	}*/
+	        d.InsertCont(Nome.getText(), Numero.getText(),cf);
+	}
+
+	public void initialize(Stage stage) {
+		stage.show();
+	}
 	
 }

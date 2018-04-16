@@ -57,7 +57,5 @@ public class Bimbo {
 	public void setBirthday(LocalDate birthday) {
 		Birthday = birthday;
 	}
-	
-	
 
 }
