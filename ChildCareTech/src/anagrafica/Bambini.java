@@ -6,13 +6,16 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
+import client.LoginController;
 import database.datalog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
@@ -21,7 +24,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Bambini implements Initializable{
 
@@ -100,7 +106,9 @@ public class Bambini implements Initializable{
 	}
 
 
+	@SuppressWarnings("deprecation")
 	public void addButtonClicked(ActionEvent ev) throws Exception{
+		((Node) ev.getSource()).getScene().getWindow().hide();
 		datalog d = new datalog();
 		Bimbo bimbo = new Bimbo();
 		bimbo.setNome(NameField.getText());
@@ -109,37 +117,80 @@ public class Bambini implements Initializable{
 		bimbo.setLuogoNascita(BirthField.getText());
 		bimbo.setBirthday(BirthdayField.getValue());
 		table.getItems().add(bimbo);
-		d.InsetChild(NameField.getText(), SurnameField.getText(), BirthField.getText(), CfField.getText(),BirthdayField.getValue());
-		
-		System.out.println("0");
+		d.InsertChild(NameField.getText(), SurnameField.getText(), BirthField.getText(), CfField.getText(),BirthdayField.getValue());
+
+		//System.out.println("0");
 		d.insertPed(Pediatra.getText(),NumeroPediatra.getText(),CfField.getText());
 		//salvo il cf nei contatti per ritrovarlo
-		System.out.println("0.5");
-		insertParents();
+		//System.out.println("0.5");
+		//insertParents(CfField.getText());
+		String cf = CfField.getText();
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/anagrafica/AddGen.fxml"));
+			Parent parent = (Parent) loader.load();
+			
+			Scene parentScene = new Scene(parent);
+			
+			
+			//access the controller and call the method
+			AddGen controller = loader.getController();
+			
+			Stage window = new Stage();
+			window.setScene(parentScene);
+			controller.init(cf,window);
+			window.setAlwaysOnTop(true);
+			window.showAndWait();
+			
+		
+			
+			}catch(Exception e){
+					System.err.println(e);
+			}
+
+			NameField.clear();
+			SurnameField.clear();
+			CfField.clear();
+			BirthField.clear();
+			Pediatra.clear();
+			NumeroPediatra.clear();
 
 	}
 
 
-	private void insertParents() throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("AddGen.fxml"));
-		Scene scene = new Scene(root);
-		Stage stage = new Stage();
-		stage.setScene(scene);
-		System.out.println("1");
-		AddGen g = new AddGen();
-		System.out.println("2");
-		g.insert(CfField.getText());
-		System.out.println("3");
-		stage.show();
-		g.initialize(stage);
+	/*private void insertParents(String cf) throws IOException {
+	
+		try {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("/anagrafica/AddGen.fxml"));
+		Parent parent = (Parent) loader.load();
+		
+		Scene parentScene = new Scene(parent);
+		
+		
+		//access the controller and call the method
+		AddGen controller = loader.getController();
+		
+		Stage window = new Stage();
+		window.setScene(parentScene);
+		controller.init(cf,window);
+		window.show();
+		window.setAlwaysOnTop(true);
+		
+		
+		}catch(Exception e){
+				System.err.println(e);
+		}
+
 		NameField.clear();
 		SurnameField.clear();
 		CfField.clear();
 		BirthField.clear();
 		Pediatra.clear();
 		NumeroPediatra.clear();
+	
 
-	}
+	}*/
 
 	public void deleteButtonClicked() throws Exception{
 		String Query,CodiceFiscale;
@@ -161,26 +212,48 @@ public class Bambini implements Initializable{
 	}
 
 	public void VediContatti(ActionEvent ev) throws Exception {
-
-		Contatti cont = new Contatti();
-
-		Bimbo Bimb;
-		Bimb = table.getSelectionModel().getSelectedItem();
-
-		if(!Bimb.getCf().isEmpty()) {
-			cont.SeeCont(Bimb.getCf());
-
-			Parent root = FXMLLoader.load(getClass().getResource("/anagrafica/Contatti.fxml"));
-			Scene scene = new Scene(root);
-			Stage stage= new Stage();
-			stage.setScene(scene);
-			cont.initialize(stage);
-			stage.show();
+		try {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("Contatti.fxml"));
+		Parent parent = (Parent) loader.load();
+		
+		Scene parentScene = new Scene(parent);
+		
+		
+		//access the controller and call the method
+		ControllerCont controller = loader.getController();
+		controller.init(table.getSelectionModel().getSelectedItem().getCf());
+		Stage window = new Stage();
+		window.setScene(parentScene);
+		window.show();
+		}catch(Exception e){
+				System.err.println(e);
 		}
-	
 
 	}
-
-
+	public void Back(ActionEvent ev) throws Exception {
+		((Node) ev.getSource()).getScene().getWindow().hide();
+		Anag C = new Anag();
+		Stage stage = new Stage();
+		C.initialize(stage);
+		
+	}
+	public void refresh(ActionEvent ev) {
+		Nome.setCellValueFactory(new PropertyValueFactory<Bimbo,String>("nome"));
+		Cognome.setCellValueFactory(new PropertyValueFactory<Bimbo,String>("cognome"));
+		Cf.setCellValueFactory(new PropertyValueFactory<Bimbo,String>("cf"));
+		LuogoNascita.setCellValueFactory(new PropertyValueFactory<Bimbo,String>("LuogoNascita"));
+		Birthday.setCellValueFactory(new PropertyValueFactory<Bimbo,LocalDate>("Birthday"));
+		try {
+			table.setItems(getBambini());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }
+
+
+
+

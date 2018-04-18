@@ -28,6 +28,6 @@
       <Text fill="WHITE" layoutX="168.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Imetti Username:" wrappingWidth="90.13672637939453" />
       <Text fill="WHITE" layoutX="168.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Imetti Password:" wrappingWidth="90.13672637939453" />
       <Text fill="WHITE" layoutX="168.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Re-Imetti Password:" wrappingWidth="118.13672637939453" />
-      <Label fx:id="label" layoutX="101.0" layoutY="414.0" prefHeight="18.0" prefWidth="363.0" />
+      <Label fx:id="label" layoutX="178.0" layoutY="339.0" prefHeight="18.0" prefWidth="363.0" textFill="#dd2828" />
    </children>
 </AnchorPane>

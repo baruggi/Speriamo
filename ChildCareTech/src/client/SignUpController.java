@@ -37,7 +37,7 @@ public class SignUpController {
 	datalog d = null;
 	
 	public void Sign(ActionEvent ev) throws Exception {
-		System.out.println("pota");
+		//System.out.println("pota");
 		if (d== null) { // così creo tutto solo una volta
 			
 		d = new datalog();

@@ -9,6 +9,8 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+
 import anagrafica.Bimbo;
 import anagrafica.Contatto;
 import database.datalog;
@@ -160,7 +162,7 @@ public class datalog {
 		
 	}
 
-	public void InsetChild(String nome, String cognome, String luogodiNascita, String Cf,LocalDate Compleanno) throws SQLException {
+	public void InsertChild(String nome, String cognome, String luogodiNascita, String Cf,LocalDate Compleanno) throws SQLException {
 		Cf.toUpperCase();
 		String query = "INSERT INTO login.bambini (Nome,Cognome,Codicefiscale,LuogoDiNascita,Compleanno) VALUES ('"+nome+"','"+cognome+"','"+luogodiNascita+"','"+Cf+"','"+Compleanno+"') ";
 		java.sql.Date.valueOf( Compleanno );
@@ -179,7 +181,7 @@ public class datalog {
 
 
 	public ObservableList<Contatto> getContatti(String cf) throws Exception {
-		String r = "SELECT * FROM login.contatti WHERE CodicFisc =" +'"'+cf+'"';
+		String r = "SELECT * FROM login.contatti WHERE Cod =" +'"'+cf+'"';
 
 		PreparedStatement state = conn.prepareStatement(r);
 		ResultSet res = state.executeQuery();
@@ -227,12 +229,18 @@ public class datalog {
 
 	public Contatto getPed(String cf) throws Exception {
 		String r = "SELECT * FROM login.pediatra WHERE Cod =" +'"'+cf+'"';
-
+		System.out.println("data "+ cf);
+		Contatto cont = new Contatto();
 		PreparedStatement state = conn.prepareStatement(r);
 		ResultSet res = state.executeQuery();
-		Contatto cont = new Contatto();
+		System.out.println("query eseguita");
+		if(res.next()) {
+		
 		cont.setNome(res.getString("nome"));
+		System.out.println(res.getString("nome"));
 		cont.setNumero(res.getString("numero"));
+		System.out.println(res.getString("numero"));
+		}
 		return cont;
 	}
 	
@@ -266,6 +274,25 @@ public class datalog {
 		PreparedStatement state = conn.prepareStatement(query);
 		state.executeUpdate();
 			
+	}
+
+
+	public Bimbo getBamb(String cf) throws Exception {
+		String r = "SELECT * FROM login.bambini Nome WHERE Codicefiscale = " +'"'+cf+'"';
+		PreparedStatement state = conn.prepareStatement(r);
+		ResultSet res = state.executeQuery();
+		Bimbo bimbo = new Bimbo();
+		while(res.next()) {
+			bimbo.setNome(res.getString("Nome"));
+			
+			bimbo.setCognome(res.getString("Cognome"));
+			
+			bimbo.setCf(res.getString("Codicefiscale"));
+			bimbo.setLuogoNascita(res.getString("LuogoDiNascita"));
+			bimbo.setBirthday(res.getDate("Compleanno").toLocalDate());
+		
+		}
+		return bimbo;
 	}
 }
 
